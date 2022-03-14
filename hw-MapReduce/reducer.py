@@ -6,19 +6,20 @@ import sys
 
 def read_mapper_output(file, separator='\t'):
 	for line in file:
-		#yield line.rstrip().split(separator)
-		yield line.split()
+		yield line.rstrip().split(separator)
 
 def main(separator='\t'):
 	data = read_mapper_output(sys.stdin, separator=separator)
-	for current_word, group in groupby(data, itemgetter(0)):
-                print current_word
+        print data
+	for phone_num,group in groupby(data, itemgetter(0)):
                 print group
 		try:
-			total_count = sum(int(count) for current_word, count in group)
-			print "%s%s%d" % (current_word, separator, total_count)
+			total_up = sum(int(count) for phone_num, group[1] in group)
+			total_down = sum(int(count) for phone_num, group[2] in group)
+                        total_sum = total_up + total_down
+			print "%s%s%d%s%d%s%d" % (phone_num, separator, total_up, separator, total_down, separator, total_sum)
 		except ValueError:
-			print "%s" % ("you lost!")
+			print ValueError
 			pass
 
 if __name__ == "__main__":
