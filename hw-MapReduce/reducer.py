@@ -1,26 +1,42 @@
 #!/usr/bin/env python
 
-from itertools import groupby
-from operator import itemgetter
 import sys
 
-def read_mapper_output(file, separator='\t'):
-	for line in file:
-		yield line.rstrip().split(separator)
+def main():
+    current_phone = None
+    current_up = 0
+    current_down = 0
+    current_sum = 0
 
-def main(separator='\t'):
-	data = read_mapper_output(sys.stdin, separator=separator)
-        print data
-	for phone_num,group in groupby(data, itemgetter(0)):
-                print group
-		try:
-			total_up = sum(int(count) for phone_num, group[1] in group)
-			total_down = sum(int(count) for phone_num, group[2] in group)
-                        total_sum = total_up + total_down
-			print "%s%s%d%s%d%s%d" % (phone_num, separator, total_up, separator, total_down, separator, total_sum)
-		except ValueError:
-			print ValueError
-			pass
+    phone_num = None
+
+    for line in sys.stdin:
+        line = line.strip()
+        phone_num,up,down = line.split('\t')
+
+        try:
+            up = int(up)
+            down = int(down)
+            total = up + down
+        except ValueError:
+            continue
+
+        if current_phone == phone_num:
+            current_up += up
+            current_down += down
+            current_sum += total
+        else:
+            if current_phone:
+                print '%s\t%s\t%s\t%s' % (current_phone, current_up, current_down, current_sum)
+
+            current_up = up
+            current_down = down
+            current_sum = total
+            current_phone = phone_num
+
+    if current_phone == phone_num:
+        print '%s\t%s\t%s\t%s' % (current_phone, current_up, current_down, current_sum)
+
 
 if __name__ == "__main__":
-	main()
+    main()
