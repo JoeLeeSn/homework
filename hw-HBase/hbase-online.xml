@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>zookeeper.znode.parent</name>
+        <value>/lfhbase-jinniu</value>
+    </property>
+    <property>
+        <name>hbase.rootdir</name>
+        <value>hdfs://lfhbasejinniu/hbase</value>
+    </property>
+    <property>
+        <name>hbase.cluster.distributed</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.quorum</name>
+        <value>lf-hbase-jinniu-28-249-72.hadoop.local:2181,lf-hbase-jinniu-28-249-73.hadoop.local:2181,lf-hbase-jinniu-28-249-74.hadoop.local:2181,lf-hbase-jinniu-28-249-77.hadoop.local:2181,lf-hbase-jinniu-28-249-70.hadoop.local:2181</value>
+    </property>
+
+    <property>
+        <name>zookeeper.session.timeout</name>
+        <value>10000</value>
+        <description>DEFAULT_ZK_SESSION_TIMEOUT = 180 * 1000</description>
+    </property>
+    <property>
+        <name>zookeeper.recovery.retry</name>
+        <value>3</value>
+        <description>zk的重试次数，可调整为3次，zk不轻易挂，且如果hbase集群出问题了，每次重试均会对zk进行重试操作，zk的重试总次数是：hbase.client.retries.number * zookeeper.recovery.retry，并且每次重试的休眠时间均会呈2的指数级增长，每次访问hbase均会重试，在一次hbase操作中如果涉及多次zk访问，则如果zk不可用，则会出现很多次的zk重试。</description>
+    </property>
+    <property>
+        <name>zookeeper.recovery.retry.intervalmill</name>
+        <value>50</value>
+        <description>zk重试的休眠时间，默认为1s</description>
+    </property>
+    <property>
+        <name>ipc.socket.timeout</name>
+        <value>5000</value>
+        <description>socket建立链接的超时时间，应该小于或者等于rpc的超时时间，默认为20s</description>
+    </property>
+    <property>
+        <name>hbase.ipc.client.connect.max.retries</name>
+        <value>3</value>
+        <description>socket建连重试次数，对io错误和socket超时分别计算重试次数 默认值：</description>
+    </property>
+    <property>
+        <name>hbase.client.pause</name>
+        <value>50</value>
+        <description>失败重试时等待时间，随着重试次数越多,重试等待时间越长</description>
+    </property>
+    <property>
+        <name>hbase.client.retries.number</name>
+        <value>2</value>
+        <description>最大重试次数。所有需重试操作的最大值。例如从root region服务器获取root region，Get单元值，行Update操作等等。这是最大重试错误的值。0.98 以前默认: 10 以后默认是：35</description>
+    </property>
+    <property>
+        <name>hbase.rpc.timeout</name>
+        <value>10000</value>
+        <description>该参数表示一次RPC请求的超时时间。如果某次RPC时间超过该值，客户端就会主动关闭socket</description>
+    </property>
+    <property>
+        <name>hbase.client.operation.timeout</name>
+        <value>10000</value>
+        <description>该参数表示HBase客户端发起一次数据操作直至得到响应之间总的超时时间</description>
+    </property>
+    <property>
+        <name>hbase.client.scanner.timeout.period</name>
+        <value>10000</value>
+        <description>该参数是表示HBase客户端发起一次scan操作的rpc调用至得到响应之间总的超时时间</description>
+    </property>
+</configuration>
