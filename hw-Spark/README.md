@@ -2,7 +2,7 @@
 
 ##1、在项目环境中准备Spark
 
-![./img.png](img.png)
+![./img.png](./img.png)
 
 ##2、在项目环境中准备hadoop
 
