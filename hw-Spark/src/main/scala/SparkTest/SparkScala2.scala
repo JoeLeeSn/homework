@@ -13,25 +13,21 @@ object SparkScala2 {
    *• 将文件和目录列表作为 Map 任务的输入，每个 Map 任务将复制源列表中指定的文件的一个分区
    **/
 
-  def main(args: Array[String]) = {
-
-
-
   def checkDir(sparkSession: SparkSession, sourcePath: Path, targetPath: Path,
                fileList: ArrayBuffer[(Path, Path)], options: SparkDistCPOptions): Unit ={
 
     val fs = FileSystem.get(sparkSession.sparkContext.hadoopConfiguration)
-    fs.listSatus(sourcePath)
+    fs.listSatus(sourcePath)//获取文件列表
       . foreach(currPath => {
         if (currPath.isDirectory) {
           val subPath = currPath.getPath.toString.split(sourcePath.toString)(1)
           val nextTargetPath = new Path(targetPath + subPath)
           try {
-            fs.mkdirs(nextTargetPath)
+            fs.mkdirs(nextTargetPath)//在目标路径下建立对应目录
           } catch {
             case ex: Exception => if (!options.ignoreFailures) throw ex else logWarning(ex.getMessage)
           }
-          checkDir(sparkSession, currPath.getPath, nextTargetPath, fileList, options)
+          checkDir(sparkSession, currPath.getPath, nextTargetPath, fileList, options)//递归调用生产文件树
         } else {
           fileList.append((currPath.getPath, targetPath))
         }
@@ -57,6 +53,21 @@ object SparkScala2 {
     }).collect()
   }
 
+  def main(args: Array[String]): Unit = {
+    val conf = new SparkConf().setAppName("DistCp").setMaster("local")
+    val sc = new SparkContext(conf)
 
-}
+    val soPath = new Path(args.head) //源
+    val tarPath = new Path(args(1)) //目标
+
+    val fileList = new ArrayBuffer[(Path, Path)]()
+
+    val options = SparkDistCpOptions(args(2).toInt, args(3).toBoolean) //discp参数: -m:最大并发数；-i 忽略失败
+
+    checkDir(sc, soPath, tarPath, fileList, options) //拿到文件树
+
+    copy(sc, fileList, options) //复制
+
+    sc.stop()
+  }
 }

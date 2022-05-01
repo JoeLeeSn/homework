@@ -53,8 +53,8 @@ IDEA默认JDK为Java17，要调整为Java1.8，且将Java放到一个没有空�
 
 ##2、本地执行
 
-学业不精，仍未掌握技术要领，程序尚不能有效执行。
-
+spark-submit --class SparkTest.SparkScala1 geek-time-big-data-1.0-SNAPSHOT.jar pandi/spark pandi/sparkCopy 4 true
+`
 ##3、代码调试
 
 努力调试中……

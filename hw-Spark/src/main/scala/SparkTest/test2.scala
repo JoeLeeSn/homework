@@ -1,3 +1,4 @@
+/*
 package SparkTest
 
 import org.apache.commons.io.IOUtils
@@ -85,4 +86,4 @@ object test2 {
   javaSparkContext = new JavaSparkContext(sparkContext)
   configuration = sparkContext.hadoopConfiguration
 
-}
+}*/

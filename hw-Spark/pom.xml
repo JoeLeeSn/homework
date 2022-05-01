@@ -11,6 +11,115 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <scala.version>2.12.10</scala.version>
+        <spark.version>3.1.2</spark.version>
+        <hadoop.version>3.2</hadoop.version>
+        <kafka-clients.version>2.0.1</kafka-clients.version>
+        <kafka-streams.version>2.0.1</kafka-streams.version>
+        <encoding>UTF-8</encoding>
     </properties>
 
+<!--    <repositories>
+        <repository>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>-->
+
+    <dependencies>
+        <!-- 导入scala的依赖 -->
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+        </dependency>
+        <!-- 导入spark core的依赖 -->
+<!--        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.12</artifactId>
+            <version>3.1.2</version>
+            <scope>provided</scope>
+        </dependency>-->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.12</artifactId>
+            <version>3.1.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- 导入spark sql的依赖 -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.12</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+        <!-- 导入spark graphx的依赖 -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-graphx_2.12</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+
+        <!-- spark Streaming 的依赖-->
+        <!--start-->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming_2.12</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+        <!--spark 跟kafka 整合的依赖-->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming-kafka-0-10_2.12</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+        <!--kafka客户端依赖-->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka-clients.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+            <version>${kafka-streams.version}</version>
+        </dependency>
+        <!--end-->
+
+        <!--spark整合hive-->
+        <!--start-->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-hive_2.12</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-common</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-server</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase</artifactId>
+            <version>2.0.1</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>com.github.scopt</groupId>
+            <artifactId>scopt_2.7.7</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <!--end-->
+
+    </dependencies>
 </project>
