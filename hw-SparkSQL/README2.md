@@ -105,3 +105,32 @@ ReplaceExceptWithAntiJoin将Except算子替换为Left-Anti Join算子，
         from customers
     ) a
     where a.name="saya");
+
+# 作业三：实现自定义优化规则（静默规则）
+
+## 第一步：实现自定义规则 (静默规则，通过 set spark.sql.planChangeLog.level=WARN，确认执行到就行)
+
+    case class MyPushDown(spark: SparkSession) extends Rule[LogicalPlan] {
+        logWarning( msg = "MultiplyOptimizationRule Start")
+
+        def apply(plan: LogicalPlan): LogicalPlan = plan transform {
+            case Multiply(left, right, failOnError) if right.isInstanceOf[Literal]
+                && right.asInstanceOf[Literal].value.asInstanceOf[Int] == 1 => left
+            case Multiply(left, right, failOnError) if left.isInstanceOf[Literal]
+                && left.asInstanceOf[Literal].value.asInstanceOf[Int] == 1 => right
+        }
+    }
+
+## 第二步：创建自己的 Extension 并注入
+
+    class MySparkSessionExtension extends (SparkSessionExtensions => Unit) {
+        override def apply(extensions: SparkSessionExtensions): Unit = {
+        extensions.injectOptimizerRule { session =>
+            new MyPushDown(session)
+            }
+        }
+    }
+
+### 第三步：通过 spark.sql.extensions 提交
+    
+    bin/spark-sql --jars my.jar --conf spark.sql.extensions=com.jikeshijian.MySparkSessionExtension
